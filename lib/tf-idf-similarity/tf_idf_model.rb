@@ -8,8 +8,11 @@ module TfIdfSimilarity
     # @param [String] term a term
     # @return [Float] the term's inverse document frequency
     def inverse_document_frequency(term)
-      df = @model.document_count(term)
-      1 + log(documents.size / (df + 1.0))
+      @inverse_document_frequencies ||= {}
+      @inverse_document_frequencies[term] ||= begin
+                                                df = @model.document_count(term)
+                                                1 + log(documents.size / (df + 1.0))
+                                              end
     end
     alias_method :idf, :inverse_document_frequency
 
